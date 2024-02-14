@@ -1,0 +1,24 @@
+fast_process: "{{ lookup('ansible.builtin.env', 'fast_process') }}"
+
+chost_user: 'root'
+mih_hostname: 'mihhost'
+
+ssh_dir: '/home/dan/.ssh'
+ssh_key_filename: 'id_ed25519'
+user_public_key_file: "{{ ssh_dir }}/{{ ssh_key_filename }}.pub"
+user_public_key: "{{ lookup('file', user_public_key_file) }}"
+
+system_timezone: 'Europe/Stockholm'
+system_language: 'sv_SE'
+system_locale: "{{ system_language }}.UTF-8"
+
+admin_user: 'mihadmin'
+admin_group: 'mihadmin'
+admin_user_public_key: "{{ user_public_key }}"
+
+site_name: 'mih'  # used for the nginx config file in sites-enabled link
+site_path: '/srv/mih'
+content_owner: 'www-data'
+content_group: 'www-data'
+
+local_site_path: '/big/dev/mahjongihaninge/site/public'

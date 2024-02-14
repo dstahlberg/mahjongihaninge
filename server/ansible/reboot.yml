@@ -1,0 +1,16 @@
+- name: Reboot server to install any updated packages
+  hosts: all
+  vars_files: 'variables.yml'
+  remote_user: "{{ chost_user }}"
+  become: true
+
+  tasks:
+
+    - name: Check if fast process is requested
+      ansible.builtin.debug:
+        msg: "Fast process requested - skipping reboot"
+      when: fast_process == "true"
+
+    - name: Reboot the machine
+      ansible.builtin.reboot:
+      when: fast_process == "false"

@@ -1,0 +1,4 @@
+plugin: 'cloud.terraform.terraform_provider'
+project_path:
+  - '/big/dev/mahjongihaninge/server/tf'
+#  - "{{ lookup('ansible.builtin.env', 'TERRAFORM_DIR') }}"

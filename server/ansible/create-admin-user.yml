@@ -1,0 +1,22 @@
+- name: Create admin user
+  hosts: all
+  vars_files: 'variables.yml'
+  remote_user: "{{ chost_user }}"
+  become: true
+
+  tasks:
+    - name: Create admin user
+      ansible.builtin.user:
+        name: "{{ admin_user }}"
+        password: '!'   # lock to no login using password
+        shell: '/bin/bash'
+        state: present
+        createhome: true
+        append: true
+        groups: "{{ admin_group }}"
+
+    - name: Set admin user public key
+      ansible.posix.authorized_key:
+        user: "{{ admin_user }}"
+        state: present
+        key: "{{ admin_user_public_key }}"

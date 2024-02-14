@@ -1,0 +1,32 @@
+- name: Start of main.yml
+  hosts: all
+  vars_files: 'variables.yml'
+  remote_user: "{{ chost_user }}"
+  become: true
+
+- name: Do update-instance.yml
+  import_playbook: update-instance.yml
+
+- name: Do configure-firewall.yml
+  import_playbook: configure-firewall.yml
+
+- name: Do create-admin-group.yml
+  import_playbook: create-admin-group.yml
+
+- name: Do create-admin-user.yml
+  import_playbook: create-admin-user.yml
+
+- name: Do set-locale.yml
+  import_playbook: set-locale.yml
+
+- name: Do set-hostname.yml
+  import_playbook: set-hostname.yml
+  
+- name: Do reboot.yml
+  import_playbook: reboot.yml
+
+- import_playbook: install-nginx.yml
+  name: Do install-nginx.yml
+
+- import_playbook: install-site.yml
+  name: Do install-site.yml

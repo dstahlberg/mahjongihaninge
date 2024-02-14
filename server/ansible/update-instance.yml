@@ -1,0 +1,18 @@
+- name: Update all packages to latest version
+  hosts: all
+  vars_files: 'variables.yml'
+  remote_user: "{{ chost_user }}"
+  become: true
+
+  tasks:
+    - name: Check if fast process is requested
+      ansible.builtin.debug:
+        msg: "Fast process requested - skipping updating of packages"
+      when: fast_process == "true"
+
+    - name: Update and upgrade packages
+      ansible.builtin.apt:
+        upgrade: true
+        update_cache: true
+      when: fast_process == "false"
+

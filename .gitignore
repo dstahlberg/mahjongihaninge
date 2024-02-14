@@ -1,0 +1,3 @@
+server/tf/.terraform
+server/tf/.terraform.lock.hcl
+server/tf/terraform.tfstate*

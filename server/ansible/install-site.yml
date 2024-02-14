@@ -1,0 +1,15 @@
+- name: Reboot server to install any updated packages
+  hosts: all
+  vars_files: 'variables.yml'
+  remote_user: "{{ chost_user }}"
+  become: true
+
+  tasks:
+    - name: Copy site files (recursively) to website
+      ansible.builtin.copy:
+        src: "{{ local_site_path }}/" 
+        dest: "{{ site_path }}"
+        directory_mode: 'u=rx,g=r,o=r'
+        mode: 'u=r,g=r,o=r'
+        owner: "{{ content_owner }}"
+        group: "{{ content_group }}"

@@ -1,0 +1,47 @@
+- hosts: all
+  name: Install NGINX
+  vars_files: 'variables.yml'
+  remote_user: "{{ chost_user }}"
+  become: true
+
+  vars:
+    config_file: 'mih.cfg'
+
+  tasks:
+    - name: Ensure nginx is at the correct version
+      ansible.builtin.apt:
+        name:
+          - nginx=1.18.0-6ubuntu14.4
+        state: present
+        update_cache: true
+
+    - name: Copy nginx config file
+      ansible.builtin.copy:
+        src: "{{ config_file }}"
+        dest: "/etc/nginx/sites-available/{{ config_file }}"
+        mode: 'u=r,g=r,o=r'
+
+    - name: Create symlink
+      ansible.builtin.file:
+        src: "/etc/nginx/sites-available/{{ config_file }}"
+        dest: "/etc/nginx/sites-enabled/{{ site_name }}"
+        state: link
+
+    - name: Remove default nginx configuration
+      ansible.builtin.file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+
+    - name: Create a directory for content
+      ansible.builtin.file:
+        path: "{{ site_path }}"
+        state: directory
+        mode: 'u=rwx,g=rx,o=rx' # should 'w' be removed ??
+        owner: "{{ content_owner }}"
+        group: "{{ content_group }}"
+
+    - name: Edit in correct path to serve in config file
+      ansible.builtin.lineinfile:
+        path: "/etc/nginx/sites-available/{{ config_file }}"
+        regexp: '^\s+root'
+        line: "        root {{ site_path }};"

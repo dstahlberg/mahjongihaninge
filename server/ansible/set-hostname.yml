@@ -1,0 +1,10 @@
+- name: Set hostname
+  hosts: all
+  vars_files: 'variables.yml'
+  remote_user: "{{ chost_user }}"
+  become: true
+
+  tasks:
+    - name: Set hostname
+      ansible.builtin.hostname:
+        name: "{{ mih_hostname }}"

@@ -1,0 +1,11 @@
+- name: Create admin group
+  hosts: all
+  vars_files: 'variables.yml'
+  remote_user: "{{ chost_user }}"
+  become: true
+
+  tasks:
+    - name: Ensure admin-group exists
+      ansible.builtin.group:
+        name: "{{ admin_group }}"
+        state: present
